@@ -1,0 +1,38 @@
+### Custom
+vue-ui/dist
+
+### Project Specific
+.tmp
+artifacts
+.data
+*.env
+
+### Node template
+logs
+*.log
+npm-debug.log*
+
+# Dependency directories
+node_modules
+
+# Optional npm cache directory
+.npm
+
+### Linux template
+*~
+
+### OSX template
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+
+# Thumbnails
+._*
+
+### Windows template
+Thumbs.db
+
+# OSX
+.DS_Store
+src/.DS_Store

@@ -1,0 +1,59 @@
+{
+  "name": "twitter-demo-ui",
+  "version": "0.1.0",
+  "scripts": {
+    "serve": "vue-cli-service serve --host 127.0.0.1",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "dev": "npm run serve",
+    "start": "npm run serve"
+  },
+  "dependencies": {
+    "@vue/cli": "^3.11.0",
+    "axios": "^0.19.0",
+    "vue": "^2.6.10",
+    "vue-axios": "^2.1.4",
+    "vue-cli": "^2.9.6",
+    "vue-moment": "^4.0.0",
+    "vue-router": "^3.1.2",
+    "vuetify": "^2.0.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.11.0",
+    "@vue/cli-plugin-eslint": "^3.11.0",
+    "@vue/cli-service": "^3.11.0",
+    "babel-eslint": "^10.0.2",
+    "dotenv": "^8.1.0",
+    "eslint": "^6.2.1",
+    "eslint-plugin-vue": "^5.2.3",
+    "sass": "^1.17.4",
+    "sass-loader": "^7.1.0",
+    "vue-cli-plugin-vuetify": "^0.6.3",
+    "vue-template-compiler": "^2.6.10",
+    "vuetify-loader": "^1.2.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "rules": {},
+    "parserOptions": {
+      "parser": "babel-eslint"
+    }
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
