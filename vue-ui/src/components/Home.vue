@@ -1,92 +1,95 @@
 <template>
-  <v-app>
-    <v-content>
+<v-app>
+<v-content>
 
-      <v-container grid-list-sm>
-        <v-layout row fill-height>
-          <v-flex sm6 offset-sm-3>
-            <div class="search-box">
-              <!--  Search for username -->
-              <div class="input-panel">
-                <label for="search-input">Search by a user's twitter handle:</label>
+  <v-container grid-list-sm>
+    <v-layout row fill-height>
+      <v-flex sm6 offset-sm-3>
+        <div class="search-box">
+          <!--  Search for username -->
+          <div class="input-panel">
+            <label for="search-input">Search by a user's twitter handle:</label>
+            <v-text-field
+              label="Handle / Username"
+              required
+              @keyup.enter="searchForUser()"
+              v-model="handle"
+            ></v-text-field>
+            <v-btn class="mr-4" @click="searchForUser()">Search for User</v-btn>
+          </div>
+
+          <!-- Further narrow down list of tweets (client-side search) -->
+          <transition name="fade">
+            <div class="input-panel">
+              <div v-if="hasTweets">
+                <label for="search-input">Search feed:</label>
                 <v-text-field
-                  label="Handle / Username"
+                  label="Search within tweets"
                   required
-                  @keyup.enter="searchForUser()"
-                  v-model="handle"
+                  @keyup="trimTweets()"
+                  v-model="searchTerm"
                 ></v-text-field>
-                <v-btn class="mr-4" @click="searchForUser()">Search for User</v-btn>
-              </div>
-
-              <!-- Further narrow down list of tweets (client-side search) -->
-              <transition name="fade">
-                <div class="input-panel">
-                  <div v-if="hasTweets">
-                    <label for="search-input">Search feed:</label>
-                    <v-text-field
-                      label="Search within tweets"
-                      required
-                      @keyup="trimTweets()"
-                      v-model="searchTerm"
-                    ></v-text-field>
-                    <v-btn class="mr-4" @click="trimTweets()">Filter Tweets</v-btn>
-                  </div>
-                </div>
-              </transition>
-              <!-- Loading spinner -->
-              <div v-if="loading" class="loading">
-                <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <v-btn class="mr-4" @click="trimTweets()">Filter Tweets</v-btn>
               </div>
             </div>
-          </v-flex>
-        </v-layout>
-      </v-container>
-
-      <v-container fluid>
-        <v-layout row>
-          <v-flex sm-12 text-center>
-            <div class="banner full-width"
-              v-bind:style="{ backgroundImage: 'url(' + banner + ')' }"
-            >
-              <div>
-                  <h2 v-if="hasTweets" class="user-handle">{{ displayHandle }}</h2>
-                  <span v-else class=""><h2>No such user found</h2><br>( or this profile is private ) </span>
-              </div>
-            </div>
-          </v-flex>
-        </v-layout>
-      </v-container>
-
-      <v-container>
-        <!-- Display most recent tweets from given user -->
-        <div id='list-wrapper' v-if="hasTweets">
-          <v-layout row
-            v-for="(tweet, idx) in trimTweets()"
-            :key="idx"
-          >
-            <v-flex xs6 sm2 md offset-sm-1 offset-md-2 mb-2>
-              <v-card class="data-item transparent" text-center>
-                <v-card-text>
-                  <strong>{{ tweet.created | moment("ddd, MMM Do") }}</strong><br>
-                  {{ tweet.created | moment("h:mm a") }}</v-card-text>
-              </v-card>
-            </v-flex>
-            <v-flex xs6 sm2 md1 mb-2>
-              <v-card class="avatar transparent">
-                <img :src="tweet.avatar">
-              </v-card>
-            </v-flex>
-            <v-flex xs12 sm6 md5>
-              <v-card>
-                <v-card-text>{{ tweet.content }}</v-card-text>
-              </v-card>
-            </v-flex>
-          </v-layout>
+          </transition>
+          <!-- Loading spinner -->
+          <div v-if="loading" class="loading">
+            <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+          </div>
         </div>
-      </v-container>
+      </v-flex>
+    </v-layout>
+  </v-container>
 
-    </v-content>
-  </v-app>
+  <v-container fluid>
+    <v-layout row>
+      <v-flex sm-12 text-center>
+        <div class="banner full-width"
+          v-bind:style="{ backgroundImage: 'url(' + banner + ')' }"
+        >
+          <div>
+            <h2 v-if="hasTweets" class="user-handle">{{ displayHandle }}</h2>
+            <span v-else class=""><h2>No such user found</h2><br>( or this profile is private ) </span>
+          </div>
+        </div>
+      </v-flex>
+    </v-layout>
+  </v-container>
+
+  <v-container>
+    <transition name="fade">
+      <!-- Display most recent tweets from given user -->
+      <div id='list-wrapper' v-if="hasTweets">
+        <v-layout row
+          v-for="(tweet, idx) in trimTweets()"
+          :key="idx"
+        >
+          <v-flex xs6 sm2 md offset-sm-1 offset-md-2 mb-2>
+            <v-card class="data-item transparent" text-center>
+              <v-card-text>
+                <strong>{{ tweet.created | moment('timezone', 'America/Los_Angeles', 'ddd, MMM Do') }}</strong><br>
+                {{ tweet.created | moment('timezone', 'America/Los_Angeles', 'h:mm a') }}
+              </v-card-text>
+            </v-card>
+          </v-flex>
+          <v-flex xs6 sm2 md1 mb-2>
+            <v-card class="avatar transparent">
+              <img :src="tweet.avatar">
+            </v-card>
+          </v-flex>
+          <v-flex xs12 sm6 md5>
+            <v-card>
+              <v-card-text>{{ tweet.content }}</v-card-text>
+            </v-card>
+          </v-flex>
+        </v-layout>
+      </div>
+    </transition>
+  </v-container>
+
+</v-content>
+</v-app>
 </template>
 
 <script src=""></script>
@@ -162,8 +165,9 @@ export default {
       ApiCalls.getUserData(this.$root.$data.state.apiUrl, 'banner', handle)
         .then(response => {
           const banner = Helpers.flattenObject(response)
+          console.log(banner.url)
           this.banner = (typeof banner.url !== 'undefined')
-            ? response.sizes.ipad.url
+            ? banner.url
             : ''
         })
         .catch(error => console.log(error))
@@ -240,5 +244,12 @@ export default {
 }
 .theme--light.v-card {
   border: 1px solid #BBCD67;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

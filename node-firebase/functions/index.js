@@ -10,52 +10,41 @@ const cors = require('cors')
 // Get a server up and running
 // Use same default port as Firebase for simplicity
 let app = express()
-let portNumber = 5000
+let portNumber = 5001
 
 // Get past CORS issues
 app.use(cors())
 
-// Grab sensitive info from external file
-
 // If local, check .env for Twitter API keys
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
-// And in case we're in firebase land, try that config file thing
-functions.config();
+// (appending them to `process.env`)
+require('dotenv').config()
+// And in case we're in firebase land, try that this automatic thing
+// (pre-fills a `config` var)
+const firebaseConfig = functions.config()
 
 // Set up config vars to be filled in later
-let config = {};
-
-//   "consumer_key": "WaoTjQLbwyGUjFPDs3bM6KMQU",
-//   "consumer_secret": "R5PdIs9jzpaMpLfpX3XRCiiy0iDZzTTivrlH0HcY7hG9aCbE8k",
-//   "access_token_key": "1163974938052583424-n6WJSWhGVVkLu86x14k0Kz5pt0rHgi",
-//   "access_token_secret": "e6Hs6DTYaC8u2deaeZpUcwdxgOyhr6oZfilcMbsGh8qF1"
-// }
+let twitterConfig = {};
 
 // Check below determines if we're runnign locally
 if (process.env.TWITTER_CONSUMER_KEY != '' ||
   process.env.TWITTER_CONSUMER_KEY == 'undefined' ) {
-    config = {
+    twitterConfig = {
       consumer_key: process.env.TWITTER_CONSUMER_KEY,
       consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
       access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
       access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
     }
 } else {
-  config = {
-    consumer_key: config.consumer_key,
-    consumer_secret: config.consumer_secret,
-    access_token_key: config.access_token_key,
-    access_token_secret: config.access_token_secret
+  twitterConfig = {
+    consumer_key: firebaseConfig.consumer_key,
+    consumer_secret: firebaseConfig.consumer_secret,
+    access_token_key: firebaseConfig.access_token_key,
+    access_token_secret: firebaseConfig.access_token_secret
   }
 }
 
-
-
-var client = new Twitter(config);
-
-console.log(client)
+// Initialize Twitter API client
+var client = new Twitter(twitterConfig);
 
 /**
  * :test
@@ -122,13 +111,15 @@ app.get('/search/:handle', (req, res) => {
  * @return PNG banner from twitter's image CDN
  */
 app.get('/banner/:handle', (req, res) => {
-  // console.log(`getting banner for ${req.params.handle}`)
+  console.log(`getting banner for ${req.params.handle}`)
 
   var params = {
     screen_name: req.params.handle,
   }
 
   client.get('users/profile_banner', params, function(t_error, user_banner, t_response) {
+    console.log(user_banner)
+
     if (!t_error) {
       res.json(user_banner);
     } else {
