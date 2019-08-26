@@ -9,9 +9,7 @@ export default {
    */
   getUserData: (apiUrl, endpoint, params) => {
     var requestUrl = `${apiUrl}${endpoint}/${params}`
-
-    console.warn(requestUrl)
-
+    // console.warn(requestUrl)
     const headersAndParams = {
       method: 'get',
       url: requestUrl,

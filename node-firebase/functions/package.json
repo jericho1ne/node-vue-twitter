@@ -3,10 +3,12 @@
   "description": "Cloud Functions for Firebase",
   "scripts": {
     "serve": "firebase serve --only functions",
+    "serve-local": "node index.js",
     "hosting": "firebase serve --only functions,hosting",
     "shell": "firebase functions:shell",
     "start": "npm run shell",
-    "deploy": "firebase deploy --only functions",
+    "deploy-api": "firebase deploy --only functions",
+    "deploy-ui": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
   "engines": {

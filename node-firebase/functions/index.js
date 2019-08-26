@@ -8,45 +8,54 @@ const cors = require('cors')
 
 
 // Get a server up and running
+// Use same default port as Firebase for simplicity
 let app = express()
-let portNumber = 3000
+let portNumber = 5000
 
 // Get past CORS issues
 app.use(cors())
 
 // Grab sensitive info from external file
-// DOES NOT WORK IN FIREBASE
-// if (process.env.NODE_ENV !== 'production') {
-//   require('dotenv').config();
+
+// If local, check .env for Twitter API keys
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+// And in case we're in firebase land, try that config file thing
+functions.config();
+
+// Set up config vars to be filled in later
+let config = {};
+
+//   "consumer_key": "WaoTjQLbwyGUjFPDs3bM6KMQU",
+//   "consumer_secret": "R5PdIs9jzpaMpLfpX3XRCiiy0iDZzTTivrlH0HcY7hG9aCbE8k",
+//   "access_token_key": "1163974938052583424-n6WJSWhGVVkLu86x14k0Kz5pt0rHgi",
+//   "access_token_secret": "e6Hs6DTYaC8u2deaeZpUcwdxgOyhr6oZfilcMbsGh8qF1"
 // }
 
-// Firebase-only
-const config = {
-  "consumer_key": "WaoTjQLbwyGUjFPDs3bM6KMQU",
-  "consumer_secret": "R5PdIs9jzpaMpLfpX3XRCiiy0iDZzTTivrlH0HcY7hG9aCbE8k",
-  "access_token_key": "1163974938052583424-n6WJSWhGVVkLu86x14k0Kz5pt0rHgi",
-  "access_token_secret": "e6Hs6DTYaC8u2deaeZpUcwdxgOyhr6oZfilcMbsGh8qF1"
+// Check below determines if we're runnign locally
+if (process.env.TWITTER_CONSUMER_KEY != '' ||
+  process.env.TWITTER_CONSUMER_KEY == 'undefined' ) {
+    config = {
+      consumer_key: process.env.TWITTER_CONSUMER_KEY,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+      access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
+    }
+} else {
+  config = {
+    consumer_key: config.consumer_key,
+    consumer_secret: config.consumer_secret,
+    access_token_key: config.access_token_key,
+    access_token_secret: config.access_token_secret
+  }
 }
 
-// functions.config();
 
-// Set up twitter client
-// var client = new Twitter({
-//   consumer_key: process.env.TWITTER_CONSUMER_KEY,
-//   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-//   access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-//   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET,
-// });
 
-var client = new Twitter({
-  consumer_key: config.consumer_key,
-  consumer_secret: config.consumer_secret,
-  access_token_key: config.access_token_key,
-  access_token_secret: config.access_token_secret,
-});
+var client = new Twitter(config);
 
-// console.log(process.env)
-// console.log(client)
+console.log(client)
 
 /**
  * :test

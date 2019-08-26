@@ -7,7 +7,13 @@ import App from './App.vue'
 import router from './router/index.js'
 import moment from 'vue-moment'
 
-const API_BASE_URL = process.env.VUE_APP_HOSTINEER_URL
+const API_BASE_URL = (process.env.NODE_ENV == 'development')
+  ? process.env.VUE_APP_LOCAL_API_URL
+  : process.env.VUE_APP_HOSTINEER_URL
+
+console.log(` ************************ `);
+console.log(` VUE is running in [${process.env.NODE_ENV}] mode.`);
+console.log(` ************************ `);
 
 // https://vuetifyjs.com/en/getting-started/quick-start
 import Vuetify from 'vuetify'
@@ -49,7 +55,6 @@ new Vue({
 
   data: {
     state: dataStore.state,
-    tweets: [
-    ]
+    tweets: []
   }
 })
