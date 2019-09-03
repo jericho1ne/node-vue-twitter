@@ -1,4 +1,6 @@
-# Vue.js + Node Twitter Client w/ Firebase deployment
+# Vue + Node Twitter Client w/ Firebase deployment
+
+https://node-twitter.firebaseapp.com/
 
 ## Local Setup
 * Run `npm install` in **both** `node-api` and `vue-ui` folders
