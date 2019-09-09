@@ -22,7 +22,6 @@
           <transition name="fade">
             <div class="input-panel">
               <div v-if="hasTweets">
-                <label for="search-input">Search feed:</label>
                 <v-text-field
                   label="Search within tweets"
                   required

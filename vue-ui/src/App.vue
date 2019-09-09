@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-app-bar app class="">
-      <v-toolbar-title class="text-uppercase">
+      <v-toolbar-title class="header-title">
         <span class="font-weight-light">Twitter API Demo</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
@@ -32,7 +32,7 @@ export default {
 </script>
 
 
-<style>
+<style lang="scss">
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
 
 #app,
@@ -45,19 +45,22 @@ body {
   font-size: 12px;
 }
 
-ul#navlinks {
-  list-style-type: none;
-  display: inline-flex;
-  margin-left: 20%;
-  margin-right: 20%;
-  overflow: hidden;
-  border-top: 2px solid #eeeeee;
-  border-bottom: 4px solid #cccccc;
+header {
+  .header-title {
+    font-size: 1.0rem;
+    opacity: 0.7;
+    letter-spacing: -0.5px;
+  }
+
+  .navbar {
+    .nav-link {
+      padding: .25rem;
+      text-decoration: none !important;
+    }
+  }
 }
-a.nav-link {
-  padding: 1rem 2.25rem;
-  text-decoration: none !important;
-}
+
+
 
 button.theme--light {
   transition: background-color 0.5s ease;
