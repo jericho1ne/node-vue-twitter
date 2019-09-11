@@ -14,3 +14,5 @@ NOTE: to ensure that the Twitter API calls are working, use the `test` route: ht
 ## Deploy to Firebase
 * [Install Firebase](https://firebase.google.com/docs/cli) + set up [Hosting](https://firebase.google.com/docs/hosting/quickstart)
 * OPTIONAL: if you already had Firebase installed, you may be prompted to update via `firebase serve --only hosting`
+
+![Twitter API demo, featuring @emokyloren.](/_assets/demo-screen.png?raw=true)
